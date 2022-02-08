@@ -1,0 +1,54 @@
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity ^0.8.4;
+
+contract onlineBanking  {
+    address public owner;
+
+struct bank{
+    string name;
+    uint256 accountNo;
+    uint256 amount;
+}
+constructor()public {
+    owner=msg.sender;
+}
+
+modifier onlyHolder{
+    require(owner == msg.sender );
+    _;
+}
+
+mapping (uint => bank)private banks;
+mapping( address => uint) balance;
+
+
+
+function setdetials(uint256 _adhaarId,uint256 _accountNo,uint256 _amount,string memory _name )public onlyHolder {
+    banks[_adhaarId].accountNo=_accountNo;
+    banks[_adhaarId].amount=_amount;
+    banks[_adhaarId].name=_name;
+
+}
+
+function readDetials(uint256 _adhaarId)public  onlyHolder view returns(uint256 _accountNo,uint256 _amount,string memory _name){
+    return (banks[_adhaarId].accountNo,banks[_adhaarId].amount,banks[_adhaarId].name);
+    
+}
+function tranferamount(uint amount ,address payable toReciver) public payable {
+    toReciver.transfer(amount);
+    balance[msg.sender] -= amount;
+}
+
+function getbalance( address toReciver)public onlyHolder view returns(uint){
+    return address(toReciver).balance;}
+
+
+    function incomingAmount(uint amount, address payable toReciver)public{
+require(amount > balance[msg.sender]);
+
+balance[toReciver] += amount;
+balance[msg.sender] -= amount-10;
+
+    }
+}
