@@ -1,0 +1,33 @@
+
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity ^0.8.4;
+
+
+
+
+contract voting {
+    struct vote{
+string name;
+uint adhaarid;}
+uint8 age;
+
+mapping(address => vote)internal uCanVote;
+
+constructor(uint8 _age) {
+    require (_age > 18,"not eligible for this age small boy go have feed");
+    _age=age;
+}
+
+function set(address yourAddress,string memory _name,uint _adhaarId)public{
+    uCanVote[yourAddress].name = _name;
+    uCanVote[yourAddress].adhaarid =_adhaarId;
+}
+
+function read(address yourAddress)public view returns(string memory _name,uint _adhaarId){
+    return(uCanVote[yourAddress].name,uCanVote[yourAddress].adhaarid);
+}
+
+}
+
+
